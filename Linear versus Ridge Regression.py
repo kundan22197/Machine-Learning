@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 # # Programming Assignment 4 - Linear versus Ridge Regression 
 
@@ -15,7 +14,7 @@
 # 
 # We first import the standard libaries and some libraries that will help us scale the data and perform some "feature engineering" by transforming the data into $\Phi_2({\bf x})$
 
-# In[1]:
+
 
 
 import numpy as np
@@ -32,14 +31,14 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ###  Importing the dataset
 
-# In[2]:
+
 
 
 # Import the boston dataset from sklearn
 boston_data = load_boston()
 
 
-# In[3]:
+
 
 
 #  Create X and Y variables - X holding the .data and Y holding .target 
@@ -65,7 +64,6 @@ print(X[0:2])
 
 # We will also create polynomial features for the dataset to test linear and ridge regression on data with degree = 1 and data with degree = 2. Feel free to increase the # of degress and see what effect it has on the training and test error. 
 
-# In[4]:
 
 
 # Create a PolynomialFeatures object with degree = 2. 
@@ -84,51 +82,30 @@ print(X_2.shape)
 print(y_2.shape)
 
 
-# # Your code goes here
-
-# In[6]:
 
 
 # TODO - Define the get_coeff_ridge_normaleq function. Use the normal equation method.
 # TODO - Return w values
 
-# def get_coeff(X_train, y_train):
-    
-#     w = np.dot(np.linalg.pinv(np.dot(X_train,X_train.T)), np.dot(X_train.T, y_train))
-#     return w
+
 
 def get_coeff_ridge_normaleq(X_train, y_train, alpha):
-    # use np.linalg.pinv(a)
-    #### TO-DO #####
-    
     if alpha == 0:
         w = np.dot(np.dot(np.linalg.pinv(np.dot(X_train.T, X_train)), X_train.T), y_train)
     else:  # ridge     
         N = X_train.shape[1] 
         I = np.eye(N, dtype=int)
         w = np.dot(np.dot(np.linalg.pinv(np.dot(X_train.T, X_train) + N*alpha*I), X_train.T), y_train)
-    
-    ##############
     return w
 
-
-# In[7]:
 
 
 # TODO - Define the evaluate_err_ridge function.
 # TODO - Return the train_error and test_error values
 
-# def evaluate_err(X_train, X_test, y_train, y_test, w): 
-#     #### TO-DO #####
-    
-#     train_error = np.sum(np.square(y_train - np.dot(w.T, X_train)))
-#     test_error = np.sum(np.square(y_test - np.dot(w.T, X_test)))
-    
-#     ##############
-#     return train_error, test_error
+
 
 def evaluate_err_ridge(X_train, X_test, y_train, y_test, w, alpha): 
-    #### TO-DO #####
     N = X_train.shape[0] 
 
     if alpha == 0:
@@ -137,12 +114,9 @@ def evaluate_err_ridge(X_train, X_test, y_train, y_test, w, alpha):
     else :  # ridge 
         train_error = (1/N)*np.dot((y_train - np.dot(X_train, w)).T,(y_train - np.dot(X_train, w))) + alpha * np.dot(w, w.T)
         test_error = (1/N)*np.dot((y_test - np.dot(X_test, w)).T,(y_test - np.dot(X_test, w))) + alpha * np.dot(w, w.T)
-    
-    ##############
     return train_error, test_error
 
 
-# In[8]:
 
 
 # TODO - Finish writting the k_fold_cross_validation function. 
@@ -164,13 +138,11 @@ def k_fold_cross_validation(k, X, y, alpha):
     
         
         # determine the training error and the test error
-        #### TO-DO #####
         w = get_coeff_ridge_normaleq (X_train, y_train, alpha)
         val_train_err, val_test_err = evaluate_err_ridge(X_train, X_test, y_train, y_test, w, alpha)
         
         total_E_val_train += (val_train_err/X_train.shape[0])
         total_E_val_test += (val_test_err/X_test.shape[0])
-       ##############
     
     E_val_test= total_E_val_test/k
     E_val_train= total_E_val_train/k
@@ -180,13 +152,10 @@ def k_fold_cross_validation(k, X, y, alpha):
 
 # ### Part 1.a
 
-# In[9]:
 
 
 train_err, test_err = k_fold_cross_validation(10, X, y, alpha = 0)
 
-
-# In[10]:
 
 
 print("Average MSE for train set is {} and for test set is {}".format(train_err[0][0],test_err[0][0]))
@@ -194,7 +163,7 @@ print("Average MSE for train set is {} and for test set is {}".format(train_err[
 
 # ### Part 1.b
 
-# In[11]:
+
 
 
 alpha_values = np.logspace(0.01, 1, num=13)
@@ -208,7 +177,7 @@ for alpha in alpha_values:
     print(" For alpha = {} the train error is {} and test error is {}".format(alpha, train_err[0][0], test_err [0][0]))
 
 
-# In[12]:
+
 
 
 plt.plot(alpha_values, test_err_ridge)
@@ -219,7 +188,6 @@ plt.show()
 
 # ### Part 1.c
 
-# In[31]:
 
 
 alpha_values = np.logspace(-5, 1, num=10)
@@ -237,9 +205,6 @@ for alpha in alpha_values:
     print(" For alpha = {} the train error is {} and test error is {}".format(alpha, train_err[0][0], test_err [0][0]))
 
 
-# In[32]:
-
-
 plt.plot(alpha_values, test_err_ridge)
 plt.ylabel('Error')
 plt.xlabel('Alpha value')
@@ -248,14 +213,10 @@ plt.show()
 
 # ### Part 2
 
-# In[16]:
 
 
 train_err, test_err = k_fold_cross_validation(10, X_2, y_2, alpha = 0)
 print("Average MSE for train set is {} and for test set is {}".format(train_err[0][0],test_err[0][0]))
-
-
-# In[17]:
 
 
 alpha_values = np.logspace(0.01, 1, num=13)
@@ -269,7 +230,7 @@ for alpha in alpha_values:
     print(" For alpha = {} the train error is {} and test error is {}".format(alpha, train_err[0][0], test_err [0][0]))
 
 
-# In[18]:
+
 
 
 plt.plot(alpha_values, test_err_ridge)
@@ -278,7 +239,6 @@ plt.xlabel('Alpha value')
 plt.show()
 
 
-# In[19]:
 
 
 alpha_values = np.logspace(-5, 1, num=10)
@@ -292,7 +252,6 @@ for alpha in alpha_values:
     print(" For alpha = {} the train error is {} and test error is {}".format(alpha, train_err[0][0], test_err [0][0]))
 
 
-# In[20]:
 
 
 plt.plot(alpha_values, test_err_ridge)
@@ -301,7 +260,7 @@ plt.xlabel('Alpha value')
 plt.show()
 
 
-# In[22]:
+
 
 
 X_test = np.array([5, 0.5, 2, 0, 4, 8, 4, 6, 2, 2, 2, 4, 5.5]).reshape(1,-1)
@@ -309,7 +268,7 @@ one_col = np.ones((X_test.shape[0],1))
 X_test = np.hstack((one_col, X_test))
 
 
-# In[23]:
+
 
 
 X_test_2 = poly.transform(X_test)
@@ -317,38 +276,26 @@ scaler = preprocessing.StandardScaler().fit(X_2[:,1:(X_2.shape[1]+1)])
 X_test_2[:,1:(X_test_2.shape[1]+1)] = scaler.transform(X_test_2[:,1:(X_test_2.shape[1]+1)])
 
 
-# In[24]:
+
 
 
 w = get_coeff_ridge_normaleq (X_2, y_2, alpha = 1e-05)
 
 
-# In[25]:
 
 
 predicted_price = np.dot(X_test_2, w)
 
 
-# In[26]:
 
 
 print("Predicted price of the house is {}".format(predicted_price[0]))
 
 
-# In[30]:
+
 
 
 w.T
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 
 
