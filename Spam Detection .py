@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 # # Using Naive Bayes algorithm for spam detection
 # 
@@ -12,8 +11,6 @@
 # 
 
 # ###  Importing the dataset
-
-# In[1]:
 
 
 # Import the usual libraries
@@ -28,7 +25,6 @@ df.head()
 # ### Data preprocesssing
 # It would be more convenient if the labels were binary instead of 'ham' and 'spam'.  This way our code can always work with numerical values instead of strings.
 
-# In[2]:
 
 
 df['label']=df.label.map({'spam':1, 'ham':0})
@@ -37,7 +33,7 @@ df.head() # Again, lets observe the first 5 rows to make sure everything worked 
 
 # ### Splitting the dcoument into training set and test set
 
-# In[3]:
+
 
 
 # This time we will use sklearn's method for seperating the data
@@ -69,8 +65,6 @@ print(df_train_msgs[0:4])
 # * count frequencies of each token 
 # * remove 'stop words' (these are words that will not help us predict since they occur in most documents, e.g. 'a', 'and', 'the', 'him', 'is' ...
 
-# In[4]:
-
 
 # importing the library
 from sklearn.feature_extraction.text import CountVectorizer
@@ -84,8 +78,6 @@ vectorizer = CountVectorizer(binary = True, stop_words='english')
 # To see the 'count_vector' object
 print(vectorizer)
 
-
-# In[6]:
 
 
 # Create the vocabulary for our feature transformation
@@ -104,14 +96,8 @@ print("The label of the first training example: ", y_train[0])
 print("The first training example: ", X_train[0].tolist())# I needed to covernt the datatype to list so all the feature values would be printed
 
 
-# # Your code goes here
-
-# In[8]:
-
 
 # You should NOT use the features of sklearn library in your code.
-#### TO-DO #####
-
 # total training examples
 total_train = y_train.size
 
@@ -125,7 +111,6 @@ print(p_y0)
 print(p_y1)
 
 
-# In[9]:
 
 
 # messages with class 0 with check of occurence of the word 'admirer'
@@ -135,8 +120,6 @@ y0_admirers = df_train_msgs[df_ytrain == 0].map(lambda x: 'admirer' in x)
 y1_admirers = df_train_msgs[df_ytrain == 1].map(lambda x: 'admirer' in x)
 
 
-# In[10]:
-
 
 # messages with class 1 having the word 'admirer'
 y0_admirers_count = np.count_nonzero(y0_admirers == True) 
@@ -144,8 +127,6 @@ y0_admirers_count = np.count_nonzero(y0_admirers == True)
 # messages with class 0 having the word 'admirer'
 y1_admirers_count = np.count_nonzero(y1_admirers == True)
 
-
-# In[11]:
 
 
 p_admirers_y0 = y0_admirers_count/train_y0 # probability of class 0 having the word 'admirer'
@@ -155,7 +136,6 @@ print(p_admirers_y0)
 print(p_admirers_y1)
 
 
-# In[12]:
 
 
 # messages with class 0 with check of occurence of the word 'secret'
@@ -165,9 +145,6 @@ y0_secret = df_train_msgs[df_ytrain == 0].map(lambda x: 'secret' in x)
 y1_secret = df_train_msgs[df_ytrain == 1].map(lambda x: 'secret' in x)
 
 
-# In[13]:
-
-
 # messages with class 0 having the word 'secret'
 y0_secret_count = np.count_nonzero(y0_secret == True)
 
@@ -175,7 +152,6 @@ y0_secret_count = np.count_nonzero(y0_secret == True)
 y1_secret_count = np.count_nonzero(y1_secret == True)
 
 
-# In[14]:
 
 
 p_secret_y0 = y0_secret_count/train_y0 # probability of class 0 having the word 'secret'
@@ -184,8 +160,6 @@ p_secret_y1 = y1_secret_count/train_y1 # probability of class 1 having the word 
 print(p_secret_y0)
 print(p_secret_y1)
 
-
-# In[15]:
 
 
 class BernoulliNB:
@@ -266,37 +240,34 @@ class BernoulliNB:
         
 
 
-# In[16]:
-
 
 b = BernoulliNB() # object of class BernoulliNB
 
 
-# In[17]:
 
 
 b.training(X_train, y_train) # training the train examples
 
 
-# In[18]:
+
 
 
 b.prediction(X_test[:5,:]) # prediction of first five test examples
 
 
-# In[19]:
+
 
 
 b.prediction(X_test[-5:,:]) # prediction of last five test examples
 
 
-# In[20]:
+
 
 
 predict_test = b.prediction(X_test) # prediction of test examples
 
 
-# In[21]:
+
 
 
 accuracy = (predict_test == y_test).mean()
@@ -305,14 +276,12 @@ percentage_error = error*100
 percentage_error
 
 
-# In[22]:
 
 
 bm = BernoulliNB(m = 0.2)  # m = 0.2 for smoothing
 bm.training(X_train, y_train)
 
 
-# In[23]:
 
 
 predict_test_m = bm.prediction(X_test)
@@ -321,15 +290,13 @@ error_m = 1 - accuracy_m
 percent_error_m = error_m * 100
 percent_error_m
 
-
-# In[26]:
 
 
 bm = BernoulliNB(m = 0.4)  # m = 0.4 for smoothing
 bm.training(X_train, y_train)
 
 
-# In[27]:
+
 
 
 predict_test_m = bm.prediction(X_test)
@@ -338,15 +305,12 @@ error_m = 1 - accuracy_m
 percent_error_m = error_m * 100
 percent_error_m
 
-
-# In[30]:
 
 
 bm = BernoulliNB(m = 0.5)  # m = 0.2 for smoothing
 bm.training(X_train, y_train)
 
 
-# In[31]:
 
 
 predict_test_m = bm.prediction(X_test)
@@ -356,7 +320,6 @@ percent_error_m = error_m * 100
 percent_error_m
 
 
-# In[24]:
 
 
 pred_test = np.array([0]*len(y_test))
@@ -365,7 +328,6 @@ accuracy = (pred_test == y_test).mean() # accuracy using zeroR
 print("Accuracy using zeroR is {}".format(accuracy)) 
 
 
-# In[25]:
 
 
 with open('output.txt', 'w') as f: # writing the values to output file
