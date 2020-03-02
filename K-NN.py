@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 # # Using the K-NN algorithm for classification of iris
 # 
@@ -12,8 +11,6 @@
 
 # ###  Importing the dataset
 # 
-
-# In[2]:
 
 
 # Import the usual libraries
@@ -30,8 +27,6 @@ df.head()
 # ### Data preprocesssing
 # It would be more convenient if the labels were integers instead of 'Iris-setosa', 'Iris-versicolor' and 'Iris-virginica'.  This way our code can always work with numerical values instead of strings.
 
-# In[3]:
-
 
 df['label'] = df.label.map({'Iris-setosa': 0,
               'Iris-versicolor': 1,
@@ -39,7 +34,6 @@ df['label'] = df.label.map({'Iris-setosa': 0,
 df.head()# Again, lets observe the first 5 rows to make sure everything worked before we continue
 
 
-# In[4]:
 
 
 # This time we will use sklearn's method for seperating the data
@@ -65,13 +59,10 @@ print("The first four iris' measurements")
 print(X_test[0:4])
 
 
-# In[7]:
+
 
 
 X_train[y_train == 1, 0]
-
-
-# In[9]:
 
 
 X_train
@@ -81,7 +72,7 @@ X_train
 # 
 # Using a scatter plot to visualize the dataset
 
-# In[5]:
+
 
 
 iris_names=['Iris-setosa','Iris-versicolor','Iris-virginica']
@@ -97,24 +88,14 @@ plt.legend(loc='lower right')
 
 plt.show()
 
-
-# # Your code goes here
-
-# In[119]:
-
-
 def euclidean_distance(x1, x2):
-  #### TO-DO #####      
     distance = np.sum((x1 -x2)**2) 
     return np.sqrt(distance) 
-  ##############
 
 
-# In[183]:
 
 
 def get_neighbors( X_train, y_train, x_test, k, distance):
-  #### TO-DO #####  
     neigh_distances=list()
     for index in range(len(X_train)):
         calc_distance = distance(X_train[index], x_test)
@@ -124,15 +105,9 @@ def get_neighbors( X_train, y_train, x_test, k, distance):
     neighbors=list()
     for index in range(k):
         neighbors.append(neigh_distances[index][1])
-  ##############
 
     return neighbors
 
-
-# In[184]:
-
-
-#### TO-DO ##### 
 
 def predict(X_train, y_train, X_test, k, distance= euclidean_distance):
     y_pred=list()
@@ -145,8 +120,6 @@ def predict(X_train, y_train, X_test, k, distance= euclidean_distance):
 
 
 # # Part 1 and 2
-
-# In[185]:
 
 
 # For k =1
@@ -164,7 +137,6 @@ print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 # # Part 3 and 4
 
-# In[186]:
 
 
 # For k =3
@@ -182,7 +154,7 @@ print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 # # Part 5 and 6
 
-# In[187]:
+
 
 
 # For k =5
@@ -200,7 +172,7 @@ print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 # # Part 7
 
-# In[188]:
+
 
 
 #PART 7 - Zero- R classifier
@@ -213,14 +185,14 @@ print('Accuracy for zeroR is {}'.format(accuracy))
 
 # # Part 8
 
-# In[197]:
+
 
 
 def manhattan_distance(x1, x2):
     return np.sum(np.absolute(x1 - x2))
 
 
-# In[198]:
+
 
 
 # For k =1
@@ -236,8 +208,6 @@ accuracy = (y_pred==y_test).mean()
 print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 
-# In[199]:
-
 
 # For k =3
 
@@ -250,9 +220,6 @@ print("Indices of elements that where misclassfied in test set are :", misclassi
 
 accuracy = (y_pred==y_test).mean()
 print('Accuracy for k = {} is {}'.format(k,accuracy))
-
-
-# In[200]:
 
 
 # For k =5
@@ -270,15 +237,6 @@ print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 # # Part 9
 
-# In[201]:
-
-
-
-
-
-# In[75]:
-
-
 # For k =3
 
 k=3
@@ -292,7 +250,6 @@ accuracy = (y_pred==y_test).mean()
 print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 
-# In[76]:
 
 
 # For k =5
@@ -308,8 +265,6 @@ accuracy = (y_pred==y_test).mean()
 print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 
-# In[77]:
-
 
 # For k =7
 
@@ -324,74 +279,49 @@ accuracy = (y_pred==y_test).mean()
 print('Accuracy for k = {} is {}'.format(k,accuracy))
 
 
-# In[202]:
+
 
 
 len(X_train)
 
 
-# In[211]:
 
 
 X_new= np.append(X_train, X_test, axis=0)
 
 
-# In[216]:
 
 
 y_new = np.append(y_train, y_test, axis=0)
 
 
-# In[218]:
 
 
 y_new
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[82]:
-
-
-
-
-
-# In[238]:
 
 
 x =np.array([[1, 28540],[1,40133],[1,39900],[1,42050],[1,43220],[1,39565],[1,40400],[1,54506],[1,0],[1,0]]).astype(float)
 
 
-# In[239]:
+
 
 
 y =np.array([137,135,127,118,118,117,117,114,122,120])
 
 
-# In[240]:
 
 
 w = np.dot(np.dot(np.linalg.inv(np.dot(x.T, x)), x.T), y)
 
 
-# In[241]:
 
 
 regression_line = np.arange(1,60000,1000)
 regression_line_y = w[0] + w[1]*regression_line
 
 
-# In[243]:
 
 
 plt.scatter(x[:,1], y, alpha=0.5)
