@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
 
 # # Salmon classification with the bivariate Gaussian
 # 
@@ -18,7 +16,6 @@
 # 
 # Note that we imported these modules using **aliases**
 
-# In[1]:
 
 
 # Standard libraries
@@ -38,7 +35,7 @@ from scipy.stats import norm, multivariate_normal
 # 
 # The dataset contains 100  examples, each example has 3 features (*gender, Freshwater, marine*) and a label (*Alaskan, Canadian*).
 
-# In[2]:
+
 
 
 # Loading the data set using Panda's in a dataframe 
@@ -54,7 +51,7 @@ df.head()
 # 
 # Often we will do more dataprepocessing, such as looking for missing values and scaling the data though that is NOT required for this assignment yet. 
 
-# In[3]:
+
 
 
 # It is easier to work with the data if the labels are integers
@@ -65,7 +62,6 @@ df['Origin']=df.Origin.map({'Alaskan':0, 'Canadian':1})
 df.head()
 
 
-# In[4]:
 
 
 # We will store the dataframe as a Numpy array
@@ -73,7 +69,6 @@ data = df.to_numpy()
 
 # Split the examples into a training set (trainx, trainy) and test set (testx, testy) 
 
-########## TO DO ##########
 n =  data.shape[0] # the number of rows
 train_n = int(.9*n) # this test set is a bit small to really evaluate our hypothesis - what could we do to get a better estimate and still keep most of the data to estimate our parameters?
 np.random.seed(0) # Our code randomly chooses which examples will be the training data, but for grading purposes we want the random numbers used to seperate the data are the same for everyone
@@ -83,13 +78,11 @@ trainy = data[perm[0:train_n],3]
 testx = data[perm[train_n:n], 1:3] # We won't look at the testx data until it is time to evauate our hypothesis.  This numpy array contains the set of test data for the assignment
 testy = data[perm[train_n:n],3]
 
-##########
 
 
 # ### Plotting the dataset
 # Visualization can be helpful when exploring and getting to know a dataset.
 
-# In[5]:
 
 
 # plotting the Alaskan salmon as a green dot
@@ -109,7 +102,7 @@ plt.plot(trainx[trainy==1,0], trainx[trainy==1,1], marker='o', ls='None', c='r')
 # 
 # Our first helper function will find the mean and covariance of the Gaussian for a set of examples
 
-# In[ ]:
+
 
 
 # Input: a design matrix
@@ -128,34 +121,22 @@ def fit_gaussian(x):
     return mu, sigma
 
 
-# 
-# Before moving on, test your code to make sure it works correctly.  
-# 
-# 
-# 
-
-# ### Write the rest of your code here
-
-# In[ ]:
 
 
 alaskan = trainx[trainy == 0] # All the alaskan species(with origin = 0) are stored in this array
 canadian = trainx[trainy == 1] # All the canadian species(with origin = 1) are stored in this array
 
 
-# In[ ]:
+
 
 
 a_mu, a_sigma = fit_gaussian(alaskan) # The model parameters(mu and sigma) for alaskan species are estimated
 
 
-# In[ ]:
-
 
 c_mu, c_sigma = fit_gaussian(canadian) # The model parameters(mu and sigma) for canadian species are estimated
 
 
-# In[ ]:
 
 
 def predict(x): # function for predicting class of new fishes
@@ -170,13 +151,11 @@ def predict(x): # function for predicting class of new fishes
     return prediction
 
 
-# In[ ]:
 
 
 out = predict(testx) # pass the test values for predicting the class of fishes
 
 
-# In[ ]:
 
 
 with open('output.txt', 'w') as f:     # Writing the outputs to an external text file
